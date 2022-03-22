@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".RegisterUser">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:text="Register"
+        android:textSize="30sp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:fontFamily="@font/bangers"/>
+
+    <EditText
+        android:id="@+id/hospname"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:hint="Name"
+        android:textColor="#3F51B5"
+        android:textColorHint="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#3F51B5"
+        android:textColorHint="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/phno"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:hint="Phone Number"
+        android:inputType="phone"
+        android:textColor="#3F51B5"
+        android:textColorHint="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/passwords"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="400dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="#3F51B5"
+        android:textColorHint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/chooseacc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Choose Account"
+        android:fontFamily="@font/arvo_bold_italic"
+        android:textSize="20sp"
+        android:layout_below="@+id/passwords" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="107dp"
+        android:layout_height="129dp"
+        android:layout_below="@+id/chooseacc"
+        android:layout_centerHorizontal="true">
+
+        <RadioButton
+            android:id="@+id/userRB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:fontFamily="@font/arvo_bold_italic"
+            app:layout_constraintBottom_toTopOf="@+id/submitbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chooseacc"
+            app:layout_constraintVertical_bias="0.253" />
+
+        <RadioButton
+            android:id="@+id/merchantRB"
+            android:layout_width="117dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/arvo_bold_italic"
+            android:text="Driver"
+            app:layout_constraintBottom_toTopOf="@+id/login_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chooseacc"
+            app:layout_constraintVertical_bias="0.617" />
+
+
+    </RadioGroup>
+
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chooseacc"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:id="@+id/registeruser"
+        android:text="Register" />
+
+
+
+</RelativeLayout>

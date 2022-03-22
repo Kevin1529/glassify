@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "990876714932",
+    "firebase_url": "https://glass-detector-default-rtdb.firebaseio.com",
+    "project_id": "glass-detector",
+    "storage_bucket": "glass-detector.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990876714932:android:4c315f61602450992cd4e1",
+        "android_client_info": {
+          "package_name": "com.example.glassdec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990876714932-8ahj664qn0a635v5kmsfdpbbc5lrrfqn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.glassdec",
+            "certificate_hash": "c310c9536b7c3d6c6b8e53b577263e8db28c2ed8"
+          }
+        },
+        {
+          "client_id": "990876714932-fosgjmld4gq0cpclirefhvdid1elfjru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXMwiRnpOkHhp06SZEb27xqBOt2BnFoIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990876714932-fosgjmld4gq0cpclirefhvdid1elfjru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
