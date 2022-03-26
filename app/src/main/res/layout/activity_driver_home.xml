@@ -16,12 +16,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/dName"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:hint="Driver Name"
-        android:id="@+id/dName"/>
+        android:hint="Driver Name" />
 
     <EditText
         android:id="@+id/dModelName"

@@ -148,6 +148,9 @@ public class UserHome extends AppCompatActivity {
                     Toast.makeText(UserHome.this, "Please Select Image", Toast.LENGTH_SHORT).show();
                 }
 
+                Intent intent = new Intent(getApplicationContext(),admin_homepage.class);
+                startActivity(intent);
+
             }
         });
 

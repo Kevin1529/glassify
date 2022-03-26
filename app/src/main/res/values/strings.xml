@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GlassDec</string>
+    <string name="drawer">Admin Panel</string>
 </resources>
