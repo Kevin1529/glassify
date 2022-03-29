@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User_Data">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:text="Name"
+        android:textStyle="normal"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:layout_below="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/user_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_name"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:text="address"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+    <TextView
+        android:id="@+id/user_phno"
+        android:text="Phone Number"
+        android:textStyle="normal"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:layout_below="@+id/user_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/user_phno"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        />
+</RelativeLayout>

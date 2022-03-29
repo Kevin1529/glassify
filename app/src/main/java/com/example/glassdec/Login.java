@@ -89,6 +89,13 @@ public class Login extends AppCompatActivity
     private void userLogin() {
         email = emaillogin.getText().toString().trim();
         String password = passlogin.getText().toString().trim();
+
+        if(email.equals("admin") && password.equals("admin"))
+        {
+            Intent intent = new Intent(getApplicationContext(),admin_homepage.class);
+            startActivity(intent);
+        }
+
         if (email.isEmpty()) {
             emaillogin.setError("Please enter email id");
             emaillogin.requestFocus();
@@ -109,6 +116,7 @@ public class Login extends AppCompatActivity
             passlogin.requestFocus();
             return;
         }
+
         FirebaseUser user = mAuth.getInstance().getCurrentUser();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>()
@@ -156,6 +164,7 @@ public class Login extends AppCompatActivity
                         }
                     }
                 });
+
     }
 
 }

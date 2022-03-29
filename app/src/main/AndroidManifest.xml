@@ -13,13 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GlassDec">
         <activity
+            android:name=".User_Data"
+            android:exported="false" />
+        <activity
             android:name=".admin_homepage"
             android:exported="false"
-            android:theme="@style/Theme.GlassDec.NoActionBar"
-            />
+            android:theme="@style/Theme.GlassDec.NoActionBar" />
         <activity
             android:name=".getUserLocation"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".ForgotPassword"
             android:exported="false" />

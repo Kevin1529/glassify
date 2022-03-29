@@ -2,7 +2,10 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Show Request List" />
-    <item android:title="Accepted List" />
-    <item android:title="Work done" />
+    <item android:title="Show Request List"
+        android:id="@+id/show_req"/>
+    <item android:title="Accepted List"
+        android:id="@+id/accepted_req"/>
+    <item android:title="Work done"
+        android:id="@+id/work_done"/>
 </menu>
