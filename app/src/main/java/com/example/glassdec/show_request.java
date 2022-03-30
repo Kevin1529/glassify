@@ -63,7 +63,7 @@ public class show_request extends Fragment {
                         Intent intent = new Intent(getContext(),User_Data.class);
                         intent.putExtra("name", selectedItem);
                         startActivity(intent);
-
+                        list.clear();
                     }
                 });
             }
@@ -73,6 +73,8 @@ public class show_request extends Fragment {
 
             }
         });
+
+        adapter.notifyDataSetChanged();
         return rootView;
     }
 
