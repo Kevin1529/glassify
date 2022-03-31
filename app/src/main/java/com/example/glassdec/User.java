@@ -2,26 +2,26 @@ package com.example.glassdec;
 
 public class User
 {
-    public String hpname,phno,email,chooseAcc;
+    public String name,phno,email,chooseAcc;
     public User()
     {
 
     }
 
-    public User(String hpname, String phno, String email,String chooseAcc)
+    public User(String name, String phno, String email,String chooseAcc)
     {
-        this.hpname = hpname;
+        this.name = name;
         this.phno = phno;
         this.email = email;
         this.chooseAcc = chooseAcc;
     }
 
-    public String getHpname() {
-        return hpname;
+    public String getName() {
+        return name;
     }
 
-    public void setHpname(String hpname) {
-        this.hpname = hpname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhno() {

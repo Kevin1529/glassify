@@ -12,6 +12,8 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -68,6 +70,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.List;
+import java.util.Locale;
+
 public class UserHome extends AppCompatActivity {
     private Button submit;
     private ImageView imageView;
@@ -117,7 +122,7 @@ public class UserHome extends AppCompatActivity {
         txtUser=findViewById(R.id.user);
         strUser="User";
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest = com.google.android.gms.location.LocationRequest.create();
+        locationRequest = LocationRequest.create();
         locationRequest.setInterval(4000);
         locationRequest.setFastestInterval(2000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -147,8 +152,6 @@ public class UserHome extends AppCompatActivity {
                 else {
                     Toast.makeText(UserHome.this, "Please Select Image", Toast.LENGTH_SHORT).show();
                 }
-
-
 
             }
         });
@@ -221,9 +224,9 @@ public class UserHome extends AppCompatActivity {
                             return;
                         }
 
-                   Toast.makeText(getApplicationContext(), "FIRST "+userLocation , Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(getApplicationContext(), "FIRST "+userLocation , Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(getApplicationContext(), "LOCATION IS: "+uloc, Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getApplicationContext(), "LOCATION IS: "+uloc, Toast.LENGTH_SHORT).show();
                         UserRequest userRequest= new UserRequest(nam,phn,add,imgpath,uloc);
                         FirebaseDatabase.getInstance().getReference("Admin").child(nam).setValue(userRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -275,20 +278,12 @@ public class UserHome extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.logoutmenu:
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-                {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item)
-                    {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(UserHome.this,Login.class));
-                        return false;
-                    }
-                });
-            default:
-                return super.onOptionsItemSelected(item);
+                        finish();
+                        break;
         }
-
+        return true;
     }
 
     @Override
@@ -368,8 +363,8 @@ public class UserHome extends AppCompatActivity {
                     userLocation=String.valueOf(userLocation1)+","+userLocation2;
 
 
-                    System.out.println(userLocation);
-                    Toast.makeText(getApplicationContext(), "LOCAG IS: "+userLocation, Toast.LENGTH_SHORT).show();
+                  //  System.out.println(userLocation);
+                   // Toast.makeText(getApplicationContext(), "LOCAG IS: "+userLocation, Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -415,4 +410,6 @@ public class UserHome extends AppCompatActivity {
             }
         }
     }
+
+
 }

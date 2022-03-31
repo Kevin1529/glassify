@@ -2,40 +2,26 @@ package com.example.glassdec;
 
 public class DriverDetails
 {
-    String dName,dCarName,dVechNo;
+    String  dloc,duty;
     public DriverDetails()
     {
 
     }
-
-    public DriverDetails(String dName, String dCarName, String dVechNo)
+    public DriverDetails( String dloc )
     {
-        this.dName = dName;
-        this.dCarName = dCarName;
-        this.dVechNo = dVechNo;
+
+        this.dloc= dloc;
+
     }
 
-    public String getdName() {
-        return dName;
+
+    public String getDloc() {
+        return dloc;
     }
 
-    public void setdName(String dName) {
-        this.dName = dName;
+    public void setDloc(String dloc) {
+        this.dloc = dloc;
     }
 
-    public String getdCarName() {
-        return dCarName;
-    }
 
-    public void setdCarName(String dCarName) {
-        this.dCarName = dCarName;
-    }
-
-    public String getdVechNo() {
-        return dVechNo;
-    }
-
-    public void setdVechNo(String dVechNo) {
-        this.dVechNo = dVechNo;
-    }
 }

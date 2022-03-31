@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DriverHome">
+    tools:context=".TrackDriver">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lcoation"
-        android:id="@+id/loc"
+        android:id="@+id/userLocation"
+        android:text="User Location"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="100dp"
+        />
 
-    <Button
-        android:id="@+id/submit"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/driverLocation"
+        android:text="Driver Location"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        android:text="OFF Duty" />
+        android:layout_marginTop="150dp"
+        />
 
 </RelativeLayout>

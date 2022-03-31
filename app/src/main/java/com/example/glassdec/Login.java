@@ -27,18 +27,22 @@ public class Login extends AppCompatActivity
 {
     TextView register,forget;
     EditText emaillogin, passlogin;
-    Button login,patient;
+    Button login;
     FirebaseAuth mAuth;
     String name;
     DatabaseReference reference;
    public static String email;
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
         register = findViewById(R.id.register);
         forget=findViewById(R.id.forget);
         emaillogin = findViewById(R.id.email);
@@ -55,6 +59,7 @@ public class Login extends AppCompatActivity
             {
                 Intent intent=new Intent(Login.this, RegisterUser.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -64,6 +69,7 @@ public class Login extends AppCompatActivity
             public void onClick(View v)
             {
                 startActivity(new Intent(Login.this, ForgotPassword.class));
+                finish();
             }
         });
 
@@ -75,27 +81,17 @@ public class Login extends AppCompatActivity
                 userLogin();
             }
         });
-
-/*        patient.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent=new Intent(getApplicationContext(),UserHome.class);
-                startActivity(intent);
-            }
-        });*/
     }
+
     private void userLogin() {
         email = emaillogin.getText().toString().trim();
         String password = passlogin.getText().toString().trim();
-
-        if(email.equals("admin") && password.equals("admin"))
+        if (email.equals("admin@gmail.com") && password.equals("admin"))
         {
-            Intent intent = new Intent(getApplicationContext(),admin_homepage.class);
-            startActivity(intent);
+            Intent driverintent = new Intent(getApplicationContext(),admin_homepage.class);
+            startActivity(driverintent);
+            finish();
         }
-
         if (email.isEmpty()) {
             emaillogin.setError("Please enter email id");
             emaillogin.requestFocus();
@@ -115,56 +111,80 @@ public class Login extends AppCompatActivity
             passlogin.setError("Password should be greater than 8");
             passlogin.requestFocus();
             return;
-        }
-
-        FirebaseUser user = mAuth.getInstance().getCurrentUser();
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                           /* reference = FirebaseDatabase.getInstance().getReference("Users");
-                            reference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-//                                    assert user != null;
-                                    String uid = user.getUid();
-                                    name = dataSnapshot.child(uid).child("chooseAcc").getValue(String.class).trim();
-                Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
-                                    if (name.equals("User")) {
-                                        Intent driverintent = new Intent(getApplicationContext(), UserHome.class);
-                                        startActivity(driverintent);
-                                        finish();
-                                    } else {
-                                        Intent userintent = new Intent(getApplicationContext(), DriverHome.class);
-                                        startActivity(userintent);
-                                        finish();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-
-                        } else {
+        } else {
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getInstance().getCurrentUser();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task)
+                        {
+                            if (task.isSuccessful())
+                            {
+                                Toast.makeText(getApplicationContext(),"Login Successfull",Toast.LENGTH_SHORT).show();
+                                Intent driverintent = new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(driverintent);
+                                finish();
+//                                getLoginUID();
+                            }
+                            else {
                             Toast.makeText(getApplicationContext(), " Login Failed", Toast.LENGTH_SHORT).show();
-                        }*/
+                        }
 
-                            Intent driverintent = new Intent(getApplicationContext(), UserHome.class);
-                            startActivity(driverintent);
-                            finish();
+//                                Intent driverintent = new Intent(getApplicationContext(), UserHome.class);
+//                                startActivity(driverintent);
+//                                finish();
+
 
                         }
-                    }
-                });
 
+                    });
+        }
     }
 
+    public void getLoginUID()
+    {
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+
+//                                    assert user != null;
+//                                        String uid = null;
+//                                        Toast.makeText(getApplicationContext(), ""+user, Toast.LENGTH_SHORT).show();
+                if (user != null)
+                {
+                    String uid = user.getUid();
+//                Toast.makeText(getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
+                    name = dataSnapshot.child(uid).child("chooseAcc").getValue(String.class).trim();
+
+//                Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
+                    if (name.equals("User")) {
+                        Intent driverintent = new Intent(getApplicationContext(), UserHome.class);
+                        startActivity(driverintent);
+                        finish();
+                    } else {
+                        Intent userintent = new Intent(getApplicationContext(), DriverHome.class);
+                        startActivity(userintent);
+                        finish();
+                    }
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), " Loading", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText(getApplicationContext(), " Failed to get data "+error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 }

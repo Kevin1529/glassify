@@ -65,132 +65,111 @@ public class RegisterUser extends AppCompatActivity
     }
 
 
-    private void registerUser()
-    {
-        final String email=emailet.getText().toString().trim();
-        String password=pass.getText().toString().trim();
-        final String hpname=hosp_name.getText().toString().trim();
-        final String phnos=phono.getText().toString().trim();
-        if (hpname.isEmpty())
-        {
+    private void registerUser() {
+        final String email = emailet.getText().toString().trim();
+        String password = pass.getText().toString().trim();
+        final String hpname = hosp_name.getText().toString().trim();
+        final String phnos = phono.getText().toString().trim();
+        if (hpname.isEmpty()) {
             hosp_name.setError("Hospital name is required");
             hosp_name.requestFocus();
             return;
         }
-        if (phnos.isEmpty())
-        {
+        if (phnos.isEmpty()) {
             phono.setError("Phone Number is required");
             phono.requestFocus();
             return;
         }
-        if (email.isEmpty())
-        {
+        if (email.isEmpty()) {
             emailet.setError("Email is required");
             emailet.requestFocus();
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailet.setError("Please provide valid email");
             emailet.requestFocus();
             return;
         }
-        if (password.isEmpty())
-        {
+        if (password.isEmpty()) {
             pass.setError("Password is required");
             pass.requestFocus();
             return;
         }
-        if (password.length()<8)
-        {
+        if (password.length() < 8) {
             pass.setError("Password should be greater than 8");
             pass.requestFocus();
             return;
+        } else {
+
+
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+
+                        FirebaseUser fuser = mAuth.getCurrentUser();
+                        fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(RegisterUser.this, "Verification Email has been sent", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(RegisterUser.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        if (rb_merchant.isChecked()) {
+                            selectedtext = rb_merchant.getText().toString();
+                            Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
+                            User user = new User(hpname, phnos, email, selectedtext);
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+//
+                                        Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
+                                        Intent mainintent = new Intent(RegisterUser.this, DriverHome.class);
+                                        startActivity(mainintent);
+                                        finish();
+//
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), " Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                        if (rb_user.isChecked()) {
+                            selectedtext = rb_user.getText().toString();
+                            Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
+                            User user = new User(hpname, phnos, email, selectedtext);
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+//
+                                        Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
+                                        Intent mainintent = new Intent(RegisterUser.this, UserHome.class);
+                                        startActivity(mainintent);
+                                        finish();
+//
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), " Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Email Already exits", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
-
-
-
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful())
-                {
-
-                  FirebaseUser fuser=mAuth.getCurrentUser();
-                    fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                        Toast.makeText(RegisterUser.this,"Verification Email has been sent",Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            Toast.makeText(RegisterUser.this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    if (rb_merchant.isChecked())
-                    {
-                        selectedtext = rb_merchant.getText().toString();
-                        Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
-                        User user=new User(hpname,phnos,email,selectedtext);
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-                                if (task.isSuccessful())
-                                {
-//
-                                    Toast.makeText(getApplicationContext(),"Registration Successful",Toast.LENGTH_SHORT).show();
-                                    Intent mainintent=new Intent(RegisterUser.this,DriverHome.class);
-                                    startActivity(mainintent);
-                                    finish();
-//
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext()," Failed",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-
-                    if (rb_user.isChecked())
-                    {
-                        selectedtext = rb_user.getText().toString();
-                        Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
-                        User user=new User(hpname,phnos,email,selectedtext);
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-                                if (task.isSuccessful())
-                                {
-//
-                                    Toast.makeText(getApplicationContext(),"Registration Successful",Toast.LENGTH_SHORT).show();
-                                    Intent mainintent=new Intent(RegisterUser.this,UserHome.class);
-                                    startActivity(mainintent);
-                                    finish();
-//
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext()," Failed",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-
-
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Email Already exits",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 }
