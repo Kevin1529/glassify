@@ -59,6 +59,7 @@ public class DriverHome extends AppCompatActivity {
     Button submit,on_duty;
     String sDuty;
     boolean bDuty;
+    String driver;
     String strAdd;
     FirebaseAuth mAuth;
     DatabaseReference reference;
@@ -69,14 +70,27 @@ public class DriverHome extends AppCompatActivity {
     public String driverLocation;
     public static double driverLocation1,driverLocation2;
     TextView txtLoc;
+
+    // Widgets for user details
+    TextView userName,userAdd,mobile;
+
+    //to get data from task
+    DatabaseReference ref;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseAuth auth;
+    String dname,dn;
+
 //   LocationCallback locationCallback;
 
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
-            if (locationResult == null) {
+
+            if (locationResult == null)
+            {
                 return;
             }
+
             for (Location location : locationResult.getLocations()) {
                 Log.d(TAG, "onLocationResult: " + location.toString());
                 Log.d(TAG, " " + location.toString());
@@ -92,12 +106,11 @@ public class DriverHome extends AppCompatActivity {
 
 //                Toast.makeText(getApplicationContext(), "LOCATION DRI IS: "+driverLocation, Toast.LENGTH_SHORT).show();
 
-
+                Toast.makeText(getApplicationContext(), "dn "+dn, Toast.LENGTH_SHORT).show();
 
                     DriverDetails driverDetails = new DriverDetails(dloc);
 
-                    FirebaseDatabase.getInstance().getReference("Drivers")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Driver Location").setValue(driverDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference("Drivers").child(dn).child("Driver Loc").setValue(driverDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -112,13 +125,6 @@ public class DriverHome extends AppCompatActivity {
         }
     };
 
-    // Widgets for user details
-    TextView userName,userAdd,mobile;
-
-    //to get data from task
-    DatabaseReference ref;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -183,33 +189,35 @@ public class DriverHome extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sDuty="ON DUTY";
-                if (sDuty=="ON DUTY")
-                {
-                    //submit.setText(sDuty);
-                    Duty duty=new Duty(sDuty);
-                    FirebaseDatabase.getInstance().getReference("Drivers")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Driver Duty").setValue(duty).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-//
-//                            Toast.makeText(getApplicationContext(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
-//
-                            }
-                        }
-                    });
-                }
+
+//                sDuty="ON DUTY";
+//                if (sDuty=="ON DUTY")
+//                {
+//                    //submit.setText(sDuty);
+//                    Duty duty=new Duty(sDuty);
+//                    FirebaseDatabase.getInstance().getReference("Drivers")
+//                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Driver Duty").setValue(duty).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()) {
+////
+////                            Toast.makeText(getApplicationContext(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
+////
+//                            }
+//                        }
+//                    });
+//                }
 
                 FirebaseUser currentUser=auth.getCurrentUser();
-                if(currentUser!=null){
+                if(currentUser!=null)
+                {
                     ref = FirebaseDatabase.getInstance().getReference("Users");
 
                     ref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String uid = user.getUid();
-                            String driver_name = snapshot.child(uid).child("name").getValue(String.class);
+                             String driver_name = snapshot.child(uid).child("name").getValue(String.class);
                             checkDriverInTask(driver_name);
                         }
 
@@ -238,7 +246,7 @@ public class DriverHome extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    String driver = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getDriverName();
+                    driver = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getDriverName();
                     String us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
                     String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
@@ -259,11 +267,38 @@ public class DriverHome extends AppCompatActivity {
             }
         });
     }
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
+        FirebaseUser currentUser=auth.getCurrentUser();
+        if(currentUser!=null)
+        {
+            ref = FirebaseDatabase.getInstance().getReference("Users");
+
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot)
+                {
+                    String uid = user.getUid();
+                    String chooseAc = snapshot.child(uid).child("chooseAcc").getValue(String.class);
+                    Toast.makeText(getApplicationContext(), chooseAc, Toast.LENGTH_SHORT).show();
+                    if (chooseAc.equals("Driver"))
+                    {
+                        dn = snapshot.child(uid).child("name").getValue(String.class);
+                        Toast.makeText(getApplicationContext(), "dname "+dn, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //getLastLocation();
             checkSettingsAndStartLocationUpdates();
+
 
         } else {
             askLocationPermission();
@@ -451,7 +486,7 @@ public class DriverHome extends AppCompatActivity {
                 strAdd = strReturnedAddress.toString();
                 Log.w("Current loction address", strReturnedAddress.toString());
                 txtLoc.setText(strAdd);
-                Toast.makeText(getApplicationContext(), strAdd, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), strAdd, Toast.LENGTH_LONG).show();
 
             } else {
                 Log.w("Current loction address", "No Address returned!");
