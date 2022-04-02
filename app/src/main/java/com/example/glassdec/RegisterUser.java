@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class RegisterUser extends AppCompatActivity
 {
     FirebaseAuth mAuth;
     int code;
+    TextView loginHere;
     RadioButton rb_user, rb_merchant;
     EditText hosp_name,phono,emailet,pass;
     Button registerUser,verify_email;
@@ -43,8 +45,20 @@ public class RegisterUser extends AppCompatActivity
         registerUser=findViewById(R.id.registeruser);
         rb_user = findViewById(R.id.userRB);
         rb_merchant = findViewById(R.id.merchantRB);
+        loginHere=findViewById(R.id.login_here);
 //        verify_email=findViewById(R.id.verifyemail);
         final FirebaseUser[] fuser = {mAuth.getCurrentUser()};
+
+        loginHere.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(RegisterUser.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         registerUser.setOnClickListener(new View.OnClickListener()
         {
@@ -54,8 +68,22 @@ public class RegisterUser extends AppCompatActivity
                 switch (v.getId())
                 {
                     case R.id.registeruser:
-                        registerUser();
-                        break;
+                        if (rb_merchant.isChecked() ||  rb_user.isChecked())
+                        {
+                            registerUser();
+                        }
+                        else {
+                            Toast.makeText(RegisterUser.this, "Please Select Account" , Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+//                        if (rb_user.isChecked())
+//                        {
+//                            registerUser();
+//                        }
+//                        else {
+//                            Toast.makeText(RegisterUser.this, "Please Select Account" , Toast.LENGTH_SHORT).show();
+//                            break;
+//                        }
                 }
             }
         });
@@ -100,8 +128,6 @@ public class RegisterUser extends AppCompatActivity
             pass.requestFocus();
             return;
         } else {
-
-
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {

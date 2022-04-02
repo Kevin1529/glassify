@@ -119,7 +119,7 @@ public class UserHome extends AppCompatActivity {
         etmob=findViewById(R.id.mob);
         etaddress=findViewById(R.id.address);
         submit=findViewById(R.id.submit);
-        txtUser=findViewById(R.id.user);
+//        txtUser=findViewById(R.id.user);
         strUser="User";
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
@@ -144,13 +144,34 @@ public class UserHome extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                if (imageUri != null)
-                {
-                    uploadToFirebase(imageUri);
+                String nam=etname.getText().toString().trim();
+                String phn=etmob.getText().toString().trim();
+                String add=etaddress.getText().toString().trim();
 
+                if (nam.isEmpty())
+                {
+                    etname.setError("Name is required");
+                    etname.requestFocus();
+                    return;
+                }
+                if (phn.isEmpty())
+                {
+                    etmob.setError("Phone Number is required");
+                    etmob.requestFocus();
+                    return;
+                }
+                if (add.isEmpty())
+                {
+                    etaddress.setError("Address is required");
+                    etaddress.requestFocus();
+                    return;
+                }
+                if (imageUri == null)
+                {
+                    Toast.makeText(UserHome.this, "Please Select Image", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(UserHome.this, "Please Select Image", Toast.LENGTH_SHORT).show();
+                     uploadToFirebase(imageUri);
                 }
 
             }
@@ -205,24 +226,6 @@ public class UserHome extends AppCompatActivity {
                         String add=etaddress.getText().toString().trim();
                         imgpath=uri.toString().trim();
 
-                        if (nam.isEmpty())
-                        {
-                            etname.setError("Name is required");
-                            etname.requestFocus();
-                            return;
-                        }
-                        if (phn.isEmpty())
-                        {
-                            etmob.setError("Phone Number is required");
-                            etmob.requestFocus();
-                            return;
-                        }
-                        if (add.isEmpty())
-                        {
-                            etaddress.setError("Address is required");
-                            etaddress.requestFocus();
-                            return;
-                        }
 
                 //   Toast.makeText(getApplicationContext(), "FIRST "+userLocation , Toast.LENGTH_SHORT).show();
 

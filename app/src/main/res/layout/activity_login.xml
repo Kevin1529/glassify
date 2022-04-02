@@ -4,57 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     tools:context=".Login">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/shape" />
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColorHint="#3F51B5"
-        android:textColor="@color/cardview_dark_background"/>
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="175dp"
+            android:background="@color/background"
+            android:fontFamily="serif"
+            android:layout_centerHorizontal="true"
+            android:text="Welcome Back!"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="430dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColorHint="#3F51B5"
-        android:textColor="@color/cardview_dark_background"/>
+        <ImageView
+            android:layout_width="233dp"
+            android:layout_height="218dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:src="@drawable/login" />
 
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/login"
-        android:layout_marginTop="520dp"
-        android:layout_centerHorizontal="true"/>
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="440dp"
+            android:background="@drawable/input"
+            android:hint="Email"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/forget"
-        android:text="Forgot Password ?"
-        android:layout_marginTop="650dp"
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/colorPrimary"
-        android:padding="5dp"
-        android:textSize="15sp"
-        android:layout_marginLeft="50dp"/>
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            android:textColor="@color/cardview_dark_background"
+            android:textColorHint="#000" />
 
-    <TextView
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="500dp"
+            android:background="@drawable/input"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            android:textColorHint="#000"
+            android:textColor="@color/cardview_dark_background"
+             />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="600dp"
+            android:background="@drawable/login_btn"
+            android:text="Login"
+            app:backgroundTint="#50C2C9" />
+
+        <TextView
+            android:id="@+id/forget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/teal_700"
+            android:padding="5dp"
+            android:text="Forgot Password ?"
+            android:textSize="15sp" />
+
+  <!--  <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/register"
@@ -65,8 +100,32 @@
         android:layout_marginTop="650dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="45dp"
-        />
+        />-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/login"
+            android:layout_centerInParent="true">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Don't have an account?" />
+
+            <TextView
+                android:id="@+id/register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:text="Register"
+                android:textColor="@color/teal_700"
+                android:textSize="15sp" />
+        </LinearLayout>
 
     </RelativeLayout>
 
