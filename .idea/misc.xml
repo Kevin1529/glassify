@@ -40,6 +40,9 @@
         <entry key="..\:/glass-detector/app/src/main/res/layout/activity_user_home.xml" value="0.19635416666666666" />
         <entry key="..\:/glass-detector/app/src/main/res/layout/drawer_header.xml" value="0.19635416666666666" />
         <entry key="..\:/glass-detector/app/src/main/res/menu/menu.xml" value="0.19635416666666666" />
+        <entry key="..\:/glassify/app/src/main/res/layout/activity_driver_home.xml" value="0.18802083333333333" />
+        <entry key="..\:/glassify/app/src/main/res/layout/activity_get_user_location.xml" value="0.18802083333333333" />
+        <entry key="..\:/glassify/app/src/main/res/layout/activity_user_data.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>

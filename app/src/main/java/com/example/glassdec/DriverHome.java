@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,8 +48,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DriverHome extends AppCompatActivity {
 
@@ -109,6 +112,14 @@ public class DriverHome extends AppCompatActivity {
         }
     };
 
+    // Widgets for user details
+    TextView userName,userAdd,mobile;
+
+    //to get data from task
+    DatabaseReference ref;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -126,7 +137,15 @@ public class DriverHome extends AppCompatActivity {
         submit=findViewById(R.id.submit);
         txtLoc=findViewById(R.id.loc);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //connecting to user widgets
+
+        userName = findViewById(R.id.username);
+        userAdd=findViewById(R.id.useraddress);
+        mobile=findViewById(R.id.mob);
+
+
+
+
 //        reference = FirebaseDatabase.getInstance().getReference("Users");
 //        reference.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -159,13 +178,15 @@ public class DriverHome extends AppCompatActivity {
 //            }
 //        });
 
+
+        auth = FirebaseAuth.getInstance();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sDuty="ON DUTY";
                 if (sDuty=="ON DUTY")
                 {
-                    submit.setText(sDuty);
+                    //submit.setText(sDuty);
                     Duty duty=new Duty(sDuty);
                     FirebaseDatabase.getInstance().getReference("Drivers")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Driver Duty").setValue(duty).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -179,9 +200,64 @@ public class DriverHome extends AppCompatActivity {
                         }
                     });
                 }
+
+                FirebaseUser currentUser=auth.getCurrentUser();
+                if(currentUser!=null){
+                    ref = FirebaseDatabase.getInstance().getReference("Users");
+
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String uid = user.getUid();
+                            String driver_name = snapshot.child(uid).child("name").getValue(String.class);
+                            checkDriverInTask(driver_name);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+
+
+
+
             }
         });
 
+    }
+    public void checkDriverInTask(String name){
+        com.example.glassdec.Task task_to_compare = new com.example.glassdec.Task();
+        DatabaseReference reference;
+        FirebaseDatabase database;
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Task");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    String driver = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getDriverName();
+                    String us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
+                    String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
+                    String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
+                    String us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
+                    if(name.equals(driver)){
+                        userName.setText(us_Name);
+                        userAdd.setText(us_Add);
+                        mobile.setText(us_Mob);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     protected void onStart() {
         super.onStart();
