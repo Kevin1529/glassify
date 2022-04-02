@@ -7,12 +7,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -114,6 +116,10 @@ public class DriverHome extends AppCompatActivity {
 
     // Widgets for user details
     TextView userName,userAdd,mobile;
+    Button start_trip;
+
+    //to store user location
+    String us_Loc;
 
     //to get data from task
     DatabaseReference ref;
@@ -142,6 +148,7 @@ public class DriverHome extends AppCompatActivity {
         userName = findViewById(R.id.username);
         userAdd=findViewById(R.id.useraddress);
         mobile=findViewById(R.id.mob);
+        start_trip = findViewById(R.id.start);
 
 
 
@@ -183,6 +190,7 @@ public class DriverHome extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                start_trip.setEnabled(true);
                 sDuty="ON DUTY";
                 if (sDuty=="ON DUTY")
                 {
@@ -226,6 +234,32 @@ public class DriverHome extends AppCompatActivity {
             }
         });
 
+        start_trip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DisplayTrack(us_Loc);
+            }
+        });
+
+    }
+
+    private void DisplayTrack(String sDestination)
+    {
+        try
+        {
+            Uri uri=Uri.parse("https://www.google.co.in/maps/dir/"+"/"+sDestination);
+            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+            intent.setPackage("com.google.android.apps.maps");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Uri uri=Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
+            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
     public void checkDriverInTask(String name){
         com.example.glassdec.Task task_to_compare = new com.example.glassdec.Task();
@@ -242,7 +276,7 @@ public class DriverHome extends AppCompatActivity {
                     String us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
                     String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
-                    String us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
+                    us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
                     if(name.equals(driver)){
                         userName.setText(us_Name);
                         userAdd.setText(us_Add);
