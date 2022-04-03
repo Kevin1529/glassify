@@ -55,12 +55,12 @@ import java.util.Objects;
 
 public class DriverHome extends AppCompatActivity {
 
-    EditText etDriverName,etVechName,etVechNo;
-    Button submit,on_duty;
+    EditText etAddWeight;
+    Button submit,comp_task;
     String sDuty;
     boolean bDuty;
     String driver;
-    String strAdd;
+    String strAdd,us_Name;
     FirebaseAuth mAuth;
     DatabaseReference reference;
     private static final String TAG = "MainActivity";
@@ -106,7 +106,7 @@ public class DriverHome extends AppCompatActivity {
 
 //                Toast.makeText(getApplicationContext(), "LOCATION DRI IS: "+driverLocation, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getApplicationContext(), "dn "+dn, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "dn "+dn, Toast.LENGTH_SHORT).show();
 
                     DriverDetails driverDetails = new DriverDetails(dloc);
 
@@ -142,12 +142,14 @@ public class DriverHome extends AppCompatActivity {
 
         submit=findViewById(R.id.submit);
         txtLoc=findViewById(R.id.loc);
-
+        comp_task=findViewById(R.id.comptask);
+        etAddWeight=findViewById(R.id.weight);
         //connecting to user widgets
 
         userName = findViewById(R.id.username);
         userAdd=findViewById(R.id.useraddress);
         mobile=findViewById(R.id.mob);
+
 
 
 
@@ -234,6 +236,30 @@ public class DriverHome extends AppCompatActivity {
             }
         });
 
+        comp_task.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                String weight= etAddWeight.getText().toString();
+
+                CompleteTask completeTask=new CompleteTask(driver,us_Name,weight);
+                Toast.makeText(getApplicationContext(), "driver "+driver, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "usname "+us_Name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "weight "+weight, Toast.LENGTH_SHORT).show();
+                FirebaseDatabase.getInstance().getReference("Completed Task")
+                            .child(us_Name).setValue(completeTask).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                          Toast.makeText(getApplicationContext(), "Task Completed Successfully", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+            }
+        });
+
     }
     public void checkDriverInTask(String name){
         com.example.glassdec.Task task_to_compare = new com.example.glassdec.Task();
@@ -247,7 +273,7 @@ public class DriverHome extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()){
                     driver = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getDriverName();
-                    String us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
+                    us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
                     String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
                     String us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
@@ -267,6 +293,8 @@ public class DriverHome extends AppCompatActivity {
             }
         });
     }
+
+
     protected void onStart()
     {
         super.onStart();
@@ -285,7 +313,7 @@ public class DriverHome extends AppCompatActivity {
                     if (chooseAc.equals("Driver"))
                     {
                         dn = snapshot.child(uid).child("name").getValue(String.class);
-                        Toast.makeText(getApplicationContext(), "dname "+dn, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "dname "+dn, Toast.LENGTH_SHORT).show();
                     }
                 }
 
