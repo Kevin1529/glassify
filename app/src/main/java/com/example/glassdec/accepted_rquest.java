@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +51,14 @@ public class accepted_rquest extends Fragment {
                     arrayList.add(task.getDriverName().toString());
                 }
                 driver_listView.setAdapter(arrayAdapter);
+                driver_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String selectedItem = (String) adapterView.getItemAtPosition(i);
+                        Toast.makeText(getContext(), "Driver: "+selectedItem, Toast.LENGTH_SHORT).show();
+                        getDriverLocation(selectedItem);
+                    }
+                });
             }
 
             @Override
@@ -59,5 +69,23 @@ public class accepted_rquest extends Fragment {
 
 
         return root;
+    }
+
+    private void getDriverLocation(String driver) {
+        firebase_database = FirebaseDatabase.getInstance();
+        databaseRef = firebase_database.getReference("Drivers");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String driver_location = snapshot.child(driver).child("Driver Loc").child("dloc").getValue(String.class);
+                Toast.makeText(getContext(), "DriverLoc"+ driver_location, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

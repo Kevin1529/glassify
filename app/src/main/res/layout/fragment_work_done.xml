@@ -5,9 +5,21 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="work done tab"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/work_done"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/purple_200"
+        android:text="Work Done" />
+
+    <ListView
+        android:id="@+id/completed_work"
+        android:layout_below="@id/work_done"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
