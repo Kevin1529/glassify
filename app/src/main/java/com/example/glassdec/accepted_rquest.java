@@ -1,6 +1,11 @@
 package com.example.glassdec;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class accepted_rquest extends Fragment {
 
@@ -29,11 +36,14 @@ public class accepted_rquest extends Fragment {
     DatabaseReference databaseRef;
     FirebaseDatabase firebase_database;
     Task task;
-
+    String strAdd,driver_location;
+    Double lng,lat;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_accepted_request,container,false);
+
+
 
         arrayList = new ArrayList<String>();
         arrayAdapter = new ArrayAdapter<String>(getContext(),R.layout.user_list,R.id.userInfo,arrayList);
@@ -55,8 +65,11 @@ public class accepted_rquest extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String selectedItem = (String) adapterView.getItemAtPosition(i);
-                        Toast.makeText(getContext(), "Driver: "+selectedItem, Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(getContext(), "Driver: "+selectedItem, Toast.LENGTH_SHORT).show();
                         getDriverLocation(selectedItem);
+
+//                        getCompleteAddressString();
+
                     }
                 });
             }
@@ -77,8 +90,19 @@ public class accepted_rquest extends Fragment {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String driver_location = snapshot.child(driver).child("Driver Loc").child("dloc").getValue(String.class);
-                Toast.makeText(getContext(), "DriverLoc"+ driver_location, Toast.LENGTH_SHORT).show();
+                driver_location = snapshot.child(driver).child("Driver Loc").child("dloc").getValue(String.class);
+              //  Toast.makeText(getContext(), "DriverLoc "+ driver_location, Toast.LENGTH_SHORT).show();
+                AlertDialog dialog;
+                dialog = new AlertDialog.Builder(getContext()).setTitle("Driver Location")
+                        .setMessage(driver_location)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.show();
             }
 
             @Override
@@ -88,4 +112,5 @@ public class accepted_rquest extends Fragment {
         });
 
     }
+
 }

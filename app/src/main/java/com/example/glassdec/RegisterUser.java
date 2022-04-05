@@ -76,14 +76,6 @@ public class RegisterUser extends AppCompatActivity
                             Toast.makeText(RegisterUser.this, "Please Select Account" , Toast.LENGTH_SHORT).show();
                             break;
                         }
-//                        if (rb_user.isChecked())
-//                        {
-//                            registerUser();
-//                        }
-//                        else {
-//                            Toast.makeText(RegisterUser.this, "Please Select Account" , Toast.LENGTH_SHORT).show();
-//                            break;
-//                        }
                 }
             }
         });
@@ -148,7 +140,7 @@ public class RegisterUser extends AppCompatActivity
 
                         if (rb_merchant.isChecked()) {
                             selectedtext = rb_merchant.getText().toString();
-                            Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
                             User user = new User(hpname, phnos, email, selectedtext);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -170,7 +162,7 @@ public class RegisterUser extends AppCompatActivity
 
                         if (rb_user.isChecked()) {
                             selectedtext = rb_user.getText().toString();
-                            Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(RegisterUser.this, selectedtext, Toast.LENGTH_SHORT).show();
                             User user = new User(hpname, phnos, email, selectedtext);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {

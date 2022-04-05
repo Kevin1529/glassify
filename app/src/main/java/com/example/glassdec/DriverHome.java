@@ -7,12 +7,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -55,12 +57,12 @@ import java.util.Objects;
 
 public class DriverHome extends AppCompatActivity {
 
-    EditText etDriverName,etVechName,etVechNo;
-    Button submit,on_duty;
+    EditText etAddWeight;
+    Button submit,comp_task,start_trip;
     String sDuty;
     boolean bDuty;
     String driver;
-    String strAdd;
+    String strAdd,us_Name;
     FirebaseAuth mAuth;
     DatabaseReference reference;
     private static final String TAG = "MainActivity";
@@ -68,8 +70,12 @@ public class DriverHome extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     public String driverLocation;
-    public static double driverLocation1,driverLocation2;
+    public static double driverLocation1;
+    public static double driverLocation2;
     TextView txtLoc;
+
+    //to store user location
+    String us_Loc;
 
     // Widgets for user details
     TextView userName,userAdd,mobile;
@@ -106,9 +112,9 @@ public class DriverHome extends AppCompatActivity {
 
 //                Toast.makeText(getApplicationContext(), "LOCATION DRI IS: "+driverLocation, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getApplicationContext(), "dn "+dn, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "dn "+dn, Toast.LENGTH_SHORT).show();
 
-                    DriverDetails driverDetails = new DriverDetails(dloc);
+                    DriverDetails driverDetails = new DriverDetails(strAdd);
 
                     FirebaseDatabase.getInstance().getReference("Drivers").child(dn).child("Driver Loc").setValue(driverDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -148,69 +154,20 @@ public class DriverHome extends AppCompatActivity {
         userName = findViewById(R.id.username);
         userAdd=findViewById(R.id.useraddress);
         mobile=findViewById(R.id.mob);
-
-
-
-
-//        reference = FirebaseDatabase.getInstance().getReference("Users");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String uid = user.getUid();
-////                String dcname = snapshot.child(uid).child("dCarName").getValue(String.class);
-//                reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Driver Details");
-//                Query query = reference.orderByChild("dCarName");
-//                query.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        if (snapshot.exists()) {
-//                            etDriverName.setEnabled(false);
-//                            Toast.makeText(DriverHome.this, "Profile Already Added!!!", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            etDriverName.setEnabled(true);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
+        comp_task=findViewById(R.id.comptask);
+        etAddWeight=findViewById(R.id.weight);
+        start_trip = findViewById(R.id.start);
 
         auth = FirebaseAuth.getInstance();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                sDuty="ON DUTY";
-//                if (sDuty=="ON DUTY")
-//                {
-//                    //submit.setText(sDuty);
-//                    Duty duty=new Duty(sDuty);
-//                    FirebaseDatabase.getInstance().getReference("Drivers")
-//                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Driver Duty").setValue(duty).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()) {
-////
-////                            Toast.makeText(getApplicationContext(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
-////
-//                            }
-//                        }
-//                    });
-//                }
 
                 FirebaseUser currentUser=auth.getCurrentUser();
                 if(currentUser!=null)
                 {
+                    start_trip.setEnabled(true);
                     ref = FirebaseDatabase.getInstance().getReference("Users");
 
                     ref.addValueEventListener(new ValueEventListener() {
@@ -228,13 +185,72 @@ public class DriverHome extends AppCompatActivity {
                     });
                 }
 
-
-
-
             }
         });
 
+        comp_task.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                String weight = etAddWeight.getText().toString();
+                String un = userName.getText().toString();
+
+                if (weight.isEmpty()) {
+                    etAddWeight.setError("Pleas Enter Weight");
+                    etAddWeight.requestFocus();
+                    return;
+                } else {
+
+                    CompleteTask completeTask = new CompleteTask(dn, un, weight);
+//                Toast.makeText(getApplicationContext(), "driver "+dn, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "usname "+un, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "weight "+weight, Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference("Completed Task").child(un).setValue(completeTask).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Task Completed Successfully", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+
+        start_trip.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+
+                DisplayTrack(us_Loc);
+                etAddWeight.setEnabled(true);
+                comp_task.setEnabled(true);
+                start_trip.setEnabled(false);
+            }
+        });
     }
+
+    private void DisplayTrack(String sDestination)
+    {
+        try
+        {
+            Uri uri=Uri.parse("https://www.google.co.in/maps/dir/"+"/"+sDestination);
+            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+            intent.setPackage("com.google.android.apps.maps");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Uri uri=Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps");
+            Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
     public void checkDriverInTask(String name){
         com.example.glassdec.Task task_to_compare = new com.example.glassdec.Task();
         DatabaseReference reference;
@@ -247,10 +263,10 @@ public class DriverHome extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()){
                     driver = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getDriverName();
-                    String us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
+                    us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
                     String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
-                    String us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
+                    us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
                     if(name.equals(driver)){
                         userName.setText(us_Name);
                         userAdd.setText(us_Add);
@@ -281,11 +297,11 @@ public class DriverHome extends AppCompatActivity {
                 {
                     String uid = user.getUid();
                     String chooseAc = snapshot.child(uid).child("chooseAcc").getValue(String.class);
-                    Toast.makeText(getApplicationContext(), chooseAc, Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getApplicationContext(), chooseAc, Toast.LENGTH_SHORT).show();
                     if (chooseAc.equals("Driver"))
                     {
                         dn = snapshot.child(uid).child("name").getValue(String.class);
-                        Toast.makeText(getApplicationContext(), "dname "+dn, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "dname "+dn, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -403,7 +419,7 @@ public class DriverHome extends AppCompatActivity {
 
 
                     System.out.println(driverLocation);
-                    Toast.makeText(getApplicationContext(), "LOCAG IS: "+driverLocation, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "LOCAG IS: "+driverLocation, Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -493,7 +509,7 @@ public class DriverHome extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w("Current loction address", "Canont get Address!");
+            Log.w("Current loction address", "Cannot get Address!");
         }
         return strAdd;
     }

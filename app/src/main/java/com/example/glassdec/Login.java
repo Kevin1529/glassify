@@ -129,7 +129,7 @@ public class Login extends AppCompatActivity
 //                                getLoginUID();
                             }
                             else {
-                            Toast.makeText(getApplicationContext(), " Login Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Incorrect email or password", Toast.LENGTH_SHORT).show();
                         }
 
 //                                Intent driverintent = new Intent(getApplicationContext(), UserHome.class);

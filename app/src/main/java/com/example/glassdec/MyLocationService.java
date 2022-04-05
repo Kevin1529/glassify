@@ -33,7 +33,7 @@ public class MyLocationService extends BroadcastReceiver
 //                        Toast.makeText(context,sLocation,Toast.LENGTH_SHORT).show();
                     }catch (Exception ex)
                     {
-                        Toast.makeText(context,sLocation,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"" +ex,Toast.LENGTH_SHORT).show();
                     }
                 }
             }

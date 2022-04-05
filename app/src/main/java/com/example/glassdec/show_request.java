@@ -59,7 +59,7 @@ public class show_request extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String selectedItem = (String) adapterView.getItemAtPosition(i);
-                        Toast.makeText(getContext(), selectedItem, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), selectedItem, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(),User_Data.class);
                         intent.putExtra("name", selectedItem);
                         startActivity(intent);

@@ -80,8 +80,9 @@ public class work_done extends Fragment {
 
                 AlertDialog dialog;
                 dialog = new AlertDialog.Builder(getContext()).setTitle(user_name)
-                        .setMessage("Driver: "+dri_name+"\n"+"Weight: "+weight)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage("Assigned Driver: "+dri_name+"\n"+"Total Weight: "+weight)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                        {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();

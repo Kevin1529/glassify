@@ -40,7 +40,7 @@ public class TrackDriver extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String uid = user.getUid();
                 name = snapshot.child(uid).child("Driver Details").child("dloc").getValue(String.class).trim();
-                Toast.makeText(getApplicationContext(), "Driver Loccation"+name, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Driver Loccation"+name, Toast.LENGTH_SHORT).show();
             }
 
             @Override

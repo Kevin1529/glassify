@@ -106,6 +106,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="550dp"
         android:background="@drawable/input"
+        android:enabled="false"
         android:hint="Enter Weight in kg"
         android:paddingLeft="20dp"
         android:textColorHint="#000" />
@@ -117,9 +118,10 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="610dp"
+        android:background="@drawable/login_btn"
+        android:enabled="false"
         android:text="Complete"
         android:textSize="20sp"
-        app:backgroundTint="#50C2C9"
-        android:background="@drawable/login_btn"/>
+        app:backgroundTint="#50C2C9" />
 </RelativeLayout>
 </ScrollView>

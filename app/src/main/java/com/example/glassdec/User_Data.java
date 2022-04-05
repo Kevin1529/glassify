@@ -156,12 +156,13 @@ public class User_Data extends AppCompatActivity
                     if(account.equals("Driver"))
                     {
                         String name = user.getName();
-                        dPhNo=user.getPhno();
-                        Toast.makeText(getApplicationContext(), "Check: "+name, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "Check: "+name, Toast.LENGTH_SHORT).show();
                         if(!list_of_drivers.contains(name))
                         {
                             list.add(user.getName().toString());
                         }
+
+
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -188,7 +189,7 @@ public class User_Data extends AppCompatActivity
                     assert task_to_compare!=null;
                     String driver_name = task_to_compare.getDriverName().toString();
                     list_of_drivers = new ArrayList<String>();
-                    Toast.makeText(getApplicationContext(), "Add driver: "+driver_name, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Add driver: "+driver_name, Toast.LENGTH_SHORT).show();
                     list_of_drivers.add(driver_name);
 
 
@@ -204,8 +205,8 @@ public class User_Data extends AppCompatActivity
     protected void sendSMSMessage()
     {
          phoneNo = userPhNo.getText().toString();
-         String Msg="Assigned Driver:- "+ driver_name +"\n" +"Driver Mobile No:- "+dPhNo;
-        Toast.makeText(getApplicationContext(), ""+phoneNo, Toast.LENGTH_LONG).show();
+         String Msg="Assigned Driver:- "+ driver_name ;//+"\n" +"Driver Mobile No:- "+dPhNo;
+       // Toast.makeText(getApplicationContext(), ""+phoneNo, Toast.LENGTH_LONG).show();
         try {
             SmsManager smsManager=SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo,null,Msg,null,null);
