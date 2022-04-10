@@ -26,6 +26,7 @@
         android:layout_width="300dp"
         android:layout_centerHorizontal="true"
         android:text="Driver Loc"
+        android:fontFamily="serif"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="25dp"/>
@@ -57,9 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="15dp"
-            android:text="Name"
+            android:text="Username"
             android:textAlignment="center"
             android:textSize="20sp"
+            android:fontFamily="serif"
             android:textStyle="normal" />
 
         <TextView
@@ -68,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="15dp"
-            android:text="address"
+            android:text="User Address"
+            android:fontFamily="serif"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="normal" />
@@ -79,7 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="15dp"
-            android:text="Phone Number"
+            android:fontFamily="serif"
+            android:text="User Mobile Number"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="normal" />

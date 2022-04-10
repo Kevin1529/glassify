@@ -77,7 +77,7 @@ public class User_Data extends AppCompatActivity
         bundle = getIntent().getExtras();
         if (bundle != null) {
             user_name = bundle.getString("name");
-            userName.setText(user_name);
+            userName.setText("Username:- "+user_name);
         }
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -96,8 +96,8 @@ public class User_Data extends AppCompatActivity
                         String img = userRequest.getImgpath().toString();
 
                         if(name.equals(user_name)){
-                            userAdd.setText(address);
-                            userPhNo.setText(phone);
+                            userAdd.setText("User Address:- "+address);
+                            userPhNo.setText("User Mob No:- "+phone);
                             Picasso.get().load(img).into(imageView);
                             user_location = userRequest.getuLocation().toString();
                            // Toast.makeText(getApplicationContext(), ""+user_location, Toast.LENGTH_SHORT).show();
