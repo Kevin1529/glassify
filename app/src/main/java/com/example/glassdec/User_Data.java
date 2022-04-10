@@ -193,7 +193,7 @@ public class User_Data extends AppCompatActivity
                     assert task_to_compare!=null;
                     String driver_name = task_to_compare.getDriverName().toString();
                     list_of_drivers = new ArrayList<String>();
-//                    Toast.makeText(getApplicationContext(), "Add driver: "+driver_name, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Add driver: "+driver_name, Toast.LENGTH_SHORT).show();
                     list_of_drivers.add(driver_name);
 
 
