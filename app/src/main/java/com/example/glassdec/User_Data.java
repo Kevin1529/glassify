@@ -45,6 +45,7 @@ public class User_Data extends AppCompatActivity
 
     Retrive_User_Request userRequest;
     Retrive_User user;
+    UserRequest usReq;
 
     ValueEventListener listener;
     ArrayList<String> list,list_of_drivers;
@@ -88,16 +89,19 @@ public class User_Data extends AppCompatActivity
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     userRequest = dataSnapshot.getValue(Retrive_User_Request.class);
 
-                    if (userRequest != null ) {
+                    if (userRequest != null) {
                         String name = userRequest.getName().toString();
                         String address = userRequest.getAddress().toString();
                         String phone = userRequest.getPhno().toString();
                         String img = userRequest.getImgpath().toString();
-                        user_location = userRequest.getuLocation().toString();
+
                         if(name.equals(user_name)){
                             userAdd.setText(address);
                             userPhNo.setText(phone);
                             Picasso.get().load(img).into(imageView);
+                            user_location = userRequest.getuLocation().toString();
+                           // Toast.makeText(getApplicationContext(), ""+user_location, Toast.LENGTH_SHORT).show();
+
                         }
 
                     }

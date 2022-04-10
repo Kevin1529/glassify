@@ -61,6 +61,7 @@ public class DriverHome extends AppCompatActivity {
     Button submit,comp_task,start_trip;
     String sDuty;
     boolean bDuty;
+    Retrive_User_Request userRequest;
     String driver;
     String strAdd,us_Name;
     FirebaseAuth mAuth;
@@ -223,6 +224,8 @@ public class DriverHome extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
+//                us_Loc= userRequest.getuLocation().toString();
+            //    Toast.makeText(getApplicationContext(), ""+us_Loc, Toast.LENGTH_SHORT).show();
 
                 DisplayTrack(us_Loc);
                 etAddWeight.setEnabled(true);
@@ -266,11 +269,14 @@ public class DriverHome extends AppCompatActivity {
                     us_Name = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getUserName();
                     String us_Add = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getAddress();
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
-                    us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
+
                     if(name.equals(driver)){
                         userName.setText(us_Name);
                         userAdd.setText(us_Add);
                         mobile.setText(us_Mob);
+                        us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
+                      //  Toast.makeText(getApplicationContext(), "usloc "+us_Loc, Toast.LENGTH_SHORT).show();
+
                     }
 
 
