@@ -97,7 +97,7 @@ public class User_Data extends AppCompatActivity
 
                         if(name.equals(user_name)){
                             userAdd.setText("User Address:- "+address);
-                            userPhNo.setText("User Mob No:- "+phone);
+                            userPhNo.setText(phone);
                             Picasso.get().load(img).into(imageView);
                             user_location = userRequest.getuLocation().toString();
                            // Toast.makeText(getApplicationContext(), ""+user_location, Toast.LENGTH_SHORT).show();
@@ -208,7 +208,7 @@ public class User_Data extends AppCompatActivity
     }
     protected void sendSMSMessage()
     {
-         phoneNo = userPhNo.getText().toString();
+         phoneNo = userPhNo.getText().toString().trim();
          String Msg="Assigned Driver:- "+ driver_name ;//+"\n" +"Driver Mobile No:- "+dPhNo;
        // Toast.makeText(getApplicationContext(), ""+phoneNo, Toast.LENGTH_LONG).show();
         try {
