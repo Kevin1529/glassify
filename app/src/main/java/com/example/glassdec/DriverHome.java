@@ -17,6 +17,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,12 +60,13 @@ public class DriverHome extends AppCompatActivity {
 
     EditText etAddWeight;
     Button submit,comp_task,start_trip;
-    String sDuty;
+    String mob;
     boolean bDuty;
     Retrive_User_Request userRequest;
     String driver;
     String strAdd,us_Name;
     FirebaseAuth mAuth;
+    String weight;
     DatabaseReference reference;
     private static final String TAG = "MainActivity";
     int location_request_code = 10001;
@@ -193,7 +195,7 @@ public class DriverHome extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                String weight = etAddWeight.getText().toString();
+                 weight = etAddWeight.getText().toString();
                 String un = userName.getText().toString();
 
                 if (weight.isEmpty()) {
@@ -211,7 +213,7 @@ public class DriverHome extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Task Completed Successfully", Toast.LENGTH_SHORT).show();
-
+                                sendSMSMessage();
                             }
                         }
                     });
@@ -271,9 +273,9 @@ public class DriverHome extends AppCompatActivity {
                     String us_Mob = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getPhone();
 
                     if(name.equals(driver)){
-                        userName.setText("Username:- "+us_Name);
-                        userAdd.setText("User Address:- "+us_Add);
-                        mobile.setText("User Mobile No:- "+us_Mob);
+                        userName.setText(us_Name);
+                        userAdd.setText(us_Add);
+                        mobile.setText(us_Mob);
                         us_Loc = Objects.requireNonNull(ds.getValue(com.example.glassdec.Task.class)).getLocation();
                       //  Toast.makeText(getApplicationContext(), "usloc "+us_Loc, Toast.LENGTH_SHORT).show();
 
@@ -519,4 +521,19 @@ public class DriverHome extends AppCompatActivity {
         }
         return strAdd;
     }
+    protected void sendSMSMessage()
+    {
+        mob = mobile.getText().toString().trim();
+        String Msg="Thank you for doing business with us."+"\n" +"We've received your material " +"Assigned Driver:- "+dn +"\n"+"Total Weight:- "+ weight +"kg";//+"\n" +"Driver Mobile No:- "+dPhNo;
+        // Toast.makeText(getApplicationContext(), ""+phoneNo, Toast.LENGTH_LONG).show();
+        try {
+            SmsManager smsManager=SmsManager.getDefault();
+            smsManager.sendTextMessage(mob,null,Msg,null,null);
+            Toast.makeText(getApplicationContext(),"Message Sent",Toast.LENGTH_LONG).show();
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),"Some fiedls is Empty "+e,Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
